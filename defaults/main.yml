@@ -1,4 +1,4 @@
-# Standards: 0.1
+# Standards: 1.2
 ---
 # @var logstash_server_version:description: Version of Logstash that gets installed
 logstash_server_version: "7.8"
