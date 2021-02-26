@@ -163,4 +163,11 @@
   tags:
     - logstash
 
+- name: Include exporter tasks
+  when: logstash_exporter_enabled | default(False)
+  include: exporter.yml
+  tags:
+    - logstash
+    - logstash-exporter
+
 ...

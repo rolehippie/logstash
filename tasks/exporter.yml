@@ -1,0 +1,63 @@
+# Standards: 1.2
+---
+- name: Check existing install
+  register: logstash_exporter_version_check
+  failed_when: False
+  changed_when: False
+  check_mode: False
+  command: /usr/bin/logstash-exporter --version
+  tags:
+    - logstash
+    - logstash-exporter
+
+- name: Fact version change
+  set_fact:
+    logstash_exporter_version_changed: "{{ logstash_exporter_version_check.rc != 0 or (logstash_exporter_version_check.stderr_lines is defined and logstash_exporter_version not in logstash_exporter_version_check.stderr_lines[0]) | bool }}"
+  tags:
+    - logstash
+    - logstash-exporter
+
+- name: Download exporter binary
+  when: logstash_exporter_version_changed
+  get_url:
+    url: "{{ logstash_exporter_download }}"
+    dest: /usr/bin/logstash-exporter
+    owner: root
+    group: root
+    mode: u=rwx,g=rx,o=rx
+  tags:
+    - logstash
+    - logstash-exporter
+
+- name: Write default config
+  notify:
+    - Restart logstash-exporter
+  template:
+    src: exporter/default.j2
+    dest: /etc/default/logstash-exporter
+  tags:
+    - logstash
+    - logstash-exporter
+
+- name: Write service file
+  notify:
+    - Restart logstash-exporter
+  template:
+    src: exporter/service.j2
+    dest: /etc/systemd/system/logstash-exporter.service
+  tags:
+    - logstash
+    - logstash-exporter
+
+- name: Start logstash-exporter service
+  systemd:
+    name: logstash-exporter
+    state: started
+    daemon_reload: True
+    masked: False
+    enabled: True
+  tags:
+    - logstash
+    - logstash-exporter
+
+...

@@ -48,4 +48,22 @@ logstash_install_plugins: []
 logstash_repository:
   "7.8": "deb https://artifacts.elastic.co/packages/7.x/apt stable main"
 
+# @var logstash_exporter_enabled:description: Enable the logstash exporter
+logstash_exporter_enabled: True
+
+# @var logstash_exporter_version:description: Version of the release to install
+logstash_exporter_version: 0.6.2
+
+# @var logstash_exporter_download:description: URL to the archive of the release to install
+logstash_exporter_download: "https://gitlab.com/alxrem/prometheus-logstash-exporter/uploads/2b66e95552dcd921fbbf667bb2e46cf3/prometheus-logstash-exporter-{{ logstash_exporter_version }}-linux-amd64"
+
+# @var logstash_exporter_host:description: Host of logstash to connect to
+logstash_exporter_host: localhost
+
+# @var logstash_exporter_port:description: Port of logstash to connect to
+logstash_exporter_port: 9600
+
+# @var logstash_exporter_args:description: List of arguments joined for the executable
+logstash_exporter_args: []
+
 ...

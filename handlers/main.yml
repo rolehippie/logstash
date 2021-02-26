@@ -1,15 +1,21 @@
 # Standards: 1.2
 ---
+- name: Reload logstash
+  systemd:
+    name: logstash
+    state: reloaded
+    daemon_reload: True
+
 - name: Restart logstash
   systemd:
     name: logstash
     state: restarted
     daemon_reload: True
 
-- name: Reload logstash
+- name: Restart logstash-exporter
   systemd:
-    name: logstash
-    state: reloaded
-    daemon_reload: True
+    name: logstash-exporter
+    state: restarted
+    daemon_reload: yes
 
 ...

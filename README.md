@@ -13,6 +13,12 @@ Building and improving this Ansible role have been sponsored by my employer **Pr
 ## Table of content
 
 * [Default Variables](#default-variables)
+  * [logstash_exporter_args](#logstash_exporter_args)
+  * [logstash_exporter_download](#logstash_exporter_download)
+  * [logstash_exporter_enabled](#logstash_exporter_enabled)
+  * [logstash_exporter_host](#logstash_exporter_host)
+  * [logstash_exporter_port](#logstash_exporter_port)
+  * [logstash_exporter_version](#logstash_exporter_version)
   * [logstash_extra_pipelines](#logstash_extra_pipelines)
   * [logstash_general_pipelines](#logstash_general_pipelines)
   * [logstash_group](#logstash_group)
@@ -35,6 +41,67 @@ Building and improving this Ansible role have been sponsored by my employer **Pr
 ---
 
 ## Default Variables
+
+### logstash_exporter_args
+
+List of arguments joined for the executable
+
+#### Default value
+
+```YAML
+logstash_exporter_args: []
+```
+
+### logstash_exporter_download
+
+URL to the archive of the release to install
+
+#### Default value
+
+```YAML
+logstash_exporter_download: https://gitlab.com/alxrem/prometheus-logstash-exporter/uploads/2b66e95552dcd921fbbf667bb2e46cf3/prometheus-logstash-exporter-{{
+  logstash_exporter_version }}-linux-amd64
+```
+
+### logstash_exporter_enabled
+
+Enable the logstash exporter
+
+#### Default value
+
+```YAML
+logstash_exporter_enabled: true
+```
+
+### logstash_exporter_host
+
+Host of logstash to connect to
+
+#### Default value
+
+```YAML
+logstash_exporter_host: localhost
+```
+
+### logstash_exporter_port
+
+Port of logstash to connect to
+
+#### Default value
+
+```YAML
+logstash_exporter_port: 9600
+```
+
+### logstash_exporter_version
+
+Version of the release to install
+
+#### Default value
+
+```YAML
+logstash_exporter_version: 0.6.2
+```
 
 ### logstash_extra_pipelines
 
