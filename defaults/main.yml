@@ -1,0 +1,51 @@
+# Standards: 0.1
+---
+# @var logstash_server_version:description: Version of Logstash that gets installed
+logstash_server_version: "7.8"
+
+# @var logstash_general_pipelines:description: List of general pipeline definitions
+logstash_general_pipelines:
+  - pipeline.id: main
+    path.config: /etc/logstash/conf.d/*.conf
+
+# @var logstash_extra_pipelines:description: List of extra pipeline definitions
+logstash_extra_pipelines: []
+
+# @var logstash_node_name:description: Name of the node
+logstash_node_name: "{{ ansible_hostname }}"
+
+# @var logstash_pipeline_ordered:description: Set the pipeline event ordering
+logstash_pipeline_ordered: auto
+
+# @var logstash_http_enabled:description: Enable the integrated HTTP API
+logstash_http_enabled: True
+
+# @var logstash_http_host:description: Host binding for the HTTP API
+logstash_http_host: 127.0.0.1
+
+# @var logstash_http_port:description: Port range for the HTTP API
+logstash_http_port: 9600-9700
+
+# @var logstash_initial_heap_space:description: Represents the initial size of total heap space
+logstash_initial_heap_space: 1g
+
+# @var logstash_maximum_heap_space:description: Represents the maximum size of total heap space
+logstash_maximum_heap_space: 1g
+
+# @var logstash_group:description: Name of the group owning Elasticsearch
+logstash_group: logstash
+
+# @var logstash_user:description: Name of the user owning Elasticsearch
+logstash_user: logstash
+
+# @var logstash_user:description: Path to the java home environment
+logstash_java_home: /usr/lib/jvm/java-11-openjdk-amd64
+
+# @var logstash_install_plugins:description: List of plugins to install
+logstash_install_plugins: []
+
+# @var logstash_repository:description: Dict of repositories matching the choosen version
+logstash_repository:
+  "7.8": "deb https://artifacts.elastic.co/packages/7.x/apt stable main"
+
+...

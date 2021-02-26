@@ -1,0 +1,23 @@
+-Xms{{ logstash_initial_heap_space }}
+-Xmx{{ logstash_maximum_heap_space }}
+
+-XX:CMSInitiatingOccupancyFraction=75
+8-13:-XX:+UseCMSInitiatingOccupancyOnly
+10-13:-XX:-UseCMSInitiatingOccupancyOnly
+-XX:+AlwaysPreTouch
+-Xss1m
+-Djava.awt.headless=true
+-Dfile.encoding=UTF-8
+-Djna.nosys=true
+-XX:-OmitStackTraceInFastThrow
+
+-Djruby.compile.invokedynamic=true
+-Djruby.jit.threshold=0
+-Djruby.regexp.interruptible=true
+
+-XX:+HeapDumpOnOutOfMemoryError
+-XX:HeapDumpPath=${LOGSTASH_HOME}/heapdump.hprof
+
+-Djava.security.egd=file:/dev/urandom
+
+-Dlog4j2.isThreadContextMapInheritable=true

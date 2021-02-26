@@ -1,0 +1,14 @@
+node:
+  name: {{ logstash_node_name }}
+
+path:
+  data: /var/lib/logstash
+  logs: /var/log/logstash
+
+pipeline:
+  ordered: {{ logstash_pipeline_ordered }}
+
+http:
+  enabled: {{ logstash_http_enabled | lower }}
+  host: {{ logstash_http_host }}
+  port: {{ logstash_http_port }}

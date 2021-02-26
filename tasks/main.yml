@@ -1,0 +1,166 @@
+# Standards: 0.1
+---
+- name: Create required group
+  group:
+    name: "{{ logstash_group }}"
+    system: True
+    state: present
+  tags:
+    - logstash
+
+- name: Create required user
+  user:
+    name: "{{ logstash_user }}"
+    group: "{{ logstash_group }}"
+    password: "!"
+    shell: /usr/sbin/nologin
+    home: /usr/share/logstash
+    create_home: False
+    system: True
+    state: present
+  tags:
+    - logstash
+
+- name: Download repo key
+  apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    id: 46095ACC8548582C1A2699A9D27D666CD88E42B4
+    state: present
+  tags:
+    - logstash
+
+- name: Add apt repository
+  apt_repository:
+    repo: "{{ logstash_repository[logstash_server_version] }}"
+    filename: logstash
+    update_cache: True
+    state: present
+  tags:
+    - logstash
+
+- name: Pin package version
+  copy:
+    content: |
+      Explantion: Pin added by logstash role
+      Package: logstash
+      Pin: version 1:{{ logstash_server_version }}*
+      Pin-Priority: 1000
+    dest: /etc/apt/preferences.d/logstash
+  tags:
+    - logstash
+
+- name: Install required packages
+  loop:
+    - openjdk-11-jre
+    - "logstash=1:{{ logstash_server_version }}*"
+  package:
+    name: "{{ item }}"
+    state: present
+  environment:
+    JAVA_HOME: "{{ logstash_java_home }}"
+  tags:
+    - logstash
+
+- name: Drop unused files
+  loop:
+    - /etc/logstash/logstash-sample.conf
+    - /etc/logstash/startup.options
+  file:
+    path: "{{ item }}"
+    state: absent
+  tags:
+    - logstash
+
+- name: Write log4j2 config
+  notify:
+    - Restart logstash
+  copy:
+    src: log4j2.properties
+    dest: /etc/logstash/log4j2.properties
+    owner: root
+    group: "{{ logstash_group }}"
+    mode: u=rw,g=rw,o=
+  tags:
+    - logstash
+
+- name: Write logstash config
+  notify:
+    - Restart logstash
+  template:
+    src: config.j2
+    dest: /etc/logstash/logstash.yml
+    owner: root
+    group: "{{ logstash_group }}"
+    mode: u=rw,g=rw,o=
+  tags:
+    - logstash
+
+- name: Write pipelines config
+  notify:
+    - Restart logstash
+  template:
+    src: pipelines.j2
+    dest: /etc/logstash/pipelines.yml
+    owner: root
+    group: "{{ logstash_group }}"
+    mode: u=rw,g=rw,o=
+  tags:
+    - logstash
+
+- name: Write jvm config
+  notify:
+    - Restart logstash
+  template:
+    src: jvm.j2
+    dest: /etc/logstash/jvm.options
+    owner: root
+    group: "{{ logstash_group }}"
+    mode: u=rw,g=rw,o=
+  tags:
+    - logstash
+
+- name: Write default config
+  notify:
+    - Restart logstash
+  template:
+    src: default.j2
+    dest: /etc/default/logstash
+  tags:
+    - logstash
+
+- name: Check installed plugins
+  register: logstash_plugins_list
+  changed_when: False
+  command: /usr/share/logstash/bin/logstash-plugin list
+  tags:
+    - logstash
+
+- name: Install defined plugins
+  loop: "{{ logstash_install_plugins }}"
+  when: item not in logstash_plugins_list.stdout and item.state | default('present') == 'present'
+  notify:
+    - Restart logstash
+  command: "/usr/share/logstash/bin/logstash-plugin install {{ item.name | default(item) }}"
+  tags:
+    - logstash
+
+- name: Remove defined plugins
+  loop: "{{ logstash_install_plugins }}"
+  when: item in logstash_plugins_list.stdout and item.state | default('present') == 'absent'
+  notify:
+    - Restart logstash
+  command: "/usr/share/logstash/bin/logstash-plugin remove {{ item.name | default(item) }}"
+  tags:
+    - logstash
+
+- name: Start logstash service
+  systemd:
+    name: logstash
+    state: started
+    daemon_reload: True
+    masked: False
+    enabled: True
+  tags:
+    - logstash
+
+...
