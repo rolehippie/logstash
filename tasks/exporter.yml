@@ -5,14 +5,14 @@
   failed_when: False
   changed_when: False
   check_mode: False
-  command: /usr/bin/logstash-exporter --version
+  shell: /usr/bin/logstash-exporter --version 2>&1
   tags:
     - logstash
     - logstash-exporter
 
 - name: Fact version change
   set_fact:
-    logstash_exporter_version_changed: "{{ logstash_exporter_version_check.rc != 0 or (logstash_exporter_version_check.stderr_lines is defined and logstash_exporter_version not in logstash_exporter_version_check.stderr_lines[0]) | bool }}"
+    logstash_exporter_version_changed: "{{ logstash_exporter_version_check.rc != 0 or (logstash_exporter_version_check.stdout_lines is defined and logstash_exporter_version not in logstash_exporter_version_check.stdout_lines[0]) | bool }}"
   tags:
     - logstash
     - logstash-exporter
