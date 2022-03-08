@@ -1,42 +1,43 @@
 # logstash
 
-[![Source Code](https://img.shields.io/badge/github-source%20code-blue?logo=github&logoColor=white)](https://github.com/rolehippie/logstash) [![Testing Build](https://github.com/rolehippie/logstash/workflows/testing/badge.svg)](https://github.com/rolehippie/logstash/actions?query=workflow%3Atesting) [![Readme Build](https://github.com/rolehippie/logstash/workflows/readme/badge.svg)](https://github.com/rolehippie/logstash/actions?query=workflow%3Areadme) [![Galaxy Build](https://github.com/rolehippie/logstash/workflows/galaxy/badge.svg)](https://github.com/rolehippie/logstash/actions?query=workflow%3Agalaxy) [![License: Apache-2.0](https://img.shields.io/github/license/rolehippie/logstash)](https://github.com/rolehippie/logstash/blob/master/LICENSE) 
+[![Source Code](https://img.shields.io/badge/github-source%20code-blue?logo=github&logoColor=white)](https://github.com/rolehippie/logstash) [![Testing Build](https://github.com/rolehippie/logstash/workflows/testing/badge.svg)](https://github.com/rolehippie/logstash/actions?query=workflow%3Atesting) [![Readme Build](https://github.com/rolehippie/logstash/workflows/readme/badge.svg)](https://github.com/rolehippie/logstash/actions?query=workflow%3Areadme) [![Galaxy Build](https://github.com/rolehippie/logstash/workflows/galaxy/badge.svg)](https://github.com/rolehippie/logstash/actions?query=workflow%3Agalaxy) [![License: Apache-2.0](https://img.shields.io/github/license/rolehippie/logstash)](https://github.com/rolehippie/logstash/blob/master/LICENSE)
 
-Ansible role to install and configure a Logstash log processor. 
+Ansible role to install and configure a Logstash log processor.
 
-## Sponsor 
+## Sponsor
 
-[![Proact Deutschland GmbH](https://proact.eu/wp-content/uploads/2020/03/proact-logo.png)](https://proact.eu) 
+[![Proact Deutschland GmbH](https://proact.eu/wp-content/uploads/2020/03/proact-logo.png)](https://proact.eu)
 
 Building and improving this Ansible role have been sponsored by my employer **Proact Deutschland GmbH**.
 
 ## Table of content
 
-* [Default Variables](#default-variables)
-  * [logstash_exporter_args](#logstash_exporter_args)
-  * [logstash_exporter_download](#logstash_exporter_download)
-  * [logstash_exporter_enabled](#logstash_exporter_enabled)
-  * [logstash_exporter_host](#logstash_exporter_host)
-  * [logstash_exporter_port](#logstash_exporter_port)
-  * [logstash_exporter_version](#logstash_exporter_version)
-  * [logstash_extra_pipelines](#logstash_extra_pipelines)
-  * [logstash_general_pipelines](#logstash_general_pipelines)
-  * [logstash_group](#logstash_group)
-  * [logstash_http_enabled](#logstash_http_enabled)
-  * [logstash_http_host](#logstash_http_host)
-  * [logstash_http_port](#logstash_http_port)
-  * [logstash_initial_heap_space](#logstash_initial_heap_space)
-  * [logstash_install_plugins](#logstash_install_plugins)
-  * [logstash_java_home](#logstash_java_home)
-  * [logstash_maximum_heap_space](#logstash_maximum_heap_space)
-  * [logstash_node_name](#logstash_node_name)
-  * [logstash_pipeline_ordered](#logstash_pipeline_ordered)
-  * [logstash_repository](#logstash_repository)
-  * [logstash_server_version](#logstash_server_version)
-  * [logstash_user](#logstash_user)
-* [Dependencies](#dependencies)
-* [License](#license)
-* [Author](#author)
+- [Default Variables](#default-variables)
+  - [logstash_exporter_args](#logstash_exporter_args)
+  - [logstash_exporter_download](#logstash_exporter_download)
+  - [logstash_exporter_enabled](#logstash_exporter_enabled)
+  - [logstash_exporter_host](#logstash_exporter_host)
+  - [logstash_exporter_port](#logstash_exporter_port)
+  - [logstash_exporter_version](#logstash_exporter_version)
+  - [logstash_extra_pipelines](#logstash_extra_pipelines)
+  - [logstash_general_pipelines](#logstash_general_pipelines)
+  - [logstash_group](#logstash_group)
+  - [logstash_http_enabled](#logstash_http_enabled)
+  - [logstash_http_host](#logstash_http_host)
+  - [logstash_http_port](#logstash_http_port)
+  - [logstash_initial_heap_space](#logstash_initial_heap_space)
+  - [logstash_install_plugins](#logstash_install_plugins)
+  - [logstash_java_home](#logstash_java_home)
+  - [logstash_maximum_heap_space](#logstash_maximum_heap_space)
+  - [logstash_node_name](#logstash_node_name)
+  - [logstash_pipeline_ordered](#logstash_pipeline_ordered)
+  - [logstash_repository](#logstash_repository)
+  - [logstash_server_version](#logstash_server_version)
+  - [logstash_user](#logstash_user)
+- [Discovered Tags](#discovered-tags)
+- [Dependencies](#dependencies)
+- [License](#license)
+- [Author](#author)
 
 ---
 
@@ -254,9 +255,16 @@ Path to the java home environment
 logstash_user: logstash
 ```
 
+## Discovered Tags
+
+**_logstash_**
+
+**_logstash-exporter_**
+
+
 ## Dependencies
 
-* None
+- None
 
 ## License
 
