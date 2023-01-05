@@ -52,8 +52,18 @@
   tags:
     - logstash
 
+- name: Enforce man dir
+  file:
+    path: /usr/share/man/man1
+    recurse: True
+    owner: root
+    group: root
+  tags:
+    - logstash
+
 - name: Install required packages
   loop:
+    - ca-certificates-java
     - openjdk-11-jre
     - "logstash=1:{{ logstash_server_version }}*"
   package:
