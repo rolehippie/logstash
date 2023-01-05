@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.0](https://github.com/rolehippie/logstash/compare/v1.0.0...v2.0.0) (2023-01-05)
+
+
+### Features
+
+* upgrade logstash exporter to 0.7.0 ([3abbe89](https://github.com/rolehippie/logstash/commit/3abbe89770eea58708e2b735da6dce65a60d8f2b))
+* upgrade logstash to 8.5 and simplify apt repo definition ([2d97083](https://github.com/rolehippie/logstash/commit/2d970833006030e7e083f96832c0957e477cdad8))
+
 ## 1.0.0 (2023-01-05)
 
 
