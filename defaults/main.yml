@@ -1,7 +1,13 @@
 # Standards: 1.2
 ---
 # @var logstash_server_version:description: Version of Logstash that gets installed
-logstash_server_version: "7.8"
+logstash_server_version: "8.5"
+
+# @var logstash_major_version:description: Major version built via server version variable
+logstash_major_version: "{{ logstash_server_version.split('.')[0] }}"
+
+# @var logstash_openjdk_version:description: Version of OpenJDK to install as part of Logstash
+logstash_openjdk_version: 11
 
 # @var logstash_general_pipelines:description: List of general pipeline definitions
 logstash_general_pipelines:
@@ -44,9 +50,8 @@ logstash_java_home: /usr/lib/jvm/java-11-openjdk-amd64
 # @var logstash_install_plugins:description: List of plugins to install
 logstash_install_plugins: []
 
-# @var logstash_repository:description: Dict of repositories matching the choosen version
-logstash_repository:
-  "7.8": "deb https://artifacts.elastic.co/packages/7.x/apt stable main"
+# @var logstash_repository:description: Repository used for installation
+logstash_repository: "deb https://artifacts.elastic.co/packages/{{ logstash_major_version }}.x/apt stable main"
 
 # @var logstash_exporter_enabled:description: Enable the logstash exporter
 logstash_exporter_enabled: True

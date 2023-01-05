@@ -26,8 +26,10 @@ Building and improving this Ansible role have been sponsored by my current and p
   - [logstash_initial_heap_space](#logstash_initial_heap_space)
   - [logstash_install_plugins](#logstash_install_plugins)
   - [logstash_java_home](#logstash_java_home)
+  - [logstash_major_version](#logstash_major_version)
   - [logstash_maximum_heap_space](#logstash_maximum_heap_space)
   - [logstash_node_name](#logstash_node_name)
+  - [logstash_openjdk_version](#logstash_openjdk_version)
   - [logstash_pipeline_ordered](#logstash_pipeline_ordered)
   - [logstash_repository](#logstash_repository)
   - [logstash_server_version](#logstash_server_version)
@@ -58,7 +60,7 @@ URL to the archive of the release to install
 #### Default value
 
 ```YAML
-logstash_exporter_download: https://gitlab.com/alxrem/prometheus-logstash-exporter/uploads/2b66e95552dcd921fbbf667bb2e46cf3/prometheus-logstash-exporter-{{
+logstash_exporter_download: https://gitlab.com/alxrem/prometheus-logstash-exporter/uploads/e0e93259ae977cc73674b95e5f5b4cfa/prometheus-logstash-exporter-{{
   logstash_exporter_version }}-linux-amd64
 ```
 
@@ -99,7 +101,7 @@ Version of the release to install
 #### Default value
 
 ```YAML
-logstash_exporter_version: 0.6.2
+logstash_exporter_version: 0.7.0
 ```
 
 ### logstash_extra_pipelines
@@ -192,6 +194,16 @@ logstash_install_plugins: []
 logstash_java_home: /usr/lib/jvm/java-11-openjdk-amd64
 ```
 
+### logstash_major_version
+
+Major version built via server version variable
+
+#### Default value
+
+```YAML
+logstash_major_version: "{{ logstash_server_version.split('.')[0] }}"
+```
+
 ### logstash_maximum_heap_space
 
 Represents the maximum size of total heap space
@@ -212,6 +224,16 @@ Name of the node
 logstash_node_name: '{{ ansible_hostname }}'
 ```
 
+### logstash_openjdk_version
+
+Version of OpenJDK to install as part of Logstash
+
+#### Default value
+
+```YAML
+logstash_openjdk_version: 11
+```
+
 ### logstash_pipeline_ordered
 
 Set the pipeline event ordering
@@ -224,13 +246,13 @@ logstash_pipeline_ordered: auto
 
 ### logstash_repository
 
-Dict of repositories matching the choosen version
+Repository used for installation
 
 #### Default value
 
 ```YAML
-logstash_repository:
-  '7.8': deb https://artifacts.elastic.co/packages/7.x/apt stable main
+logstash_repository: deb https://artifacts.elastic.co/packages/{{ logstash_major_version
+  }}.x/apt stable main
 ```
 
 ### logstash_server_version
@@ -240,7 +262,7 @@ Version of Logstash that gets installed
 #### Default value
 
 ```YAML
-logstash_server_version: '7.8'
+logstash_server_version: '8.5'
 ```
 
 ### logstash_user

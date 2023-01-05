@@ -1,7 +1,6 @@
 -Xms{{ logstash_initial_heap_space }}
 -Xmx{{ logstash_maximum_heap_space }}
 
--XX:CMSInitiatingOccupancyFraction=75
 8-13:-XX:+UseCMSInitiatingOccupancyOnly
 10-13:-XX:-UseCMSInitiatingOccupancyOnly
 -XX:+AlwaysPreTouch

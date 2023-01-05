@@ -31,7 +31,7 @@
 
 - name: Add apt repository
   apt_repository:
-    repo: "{{ logstash_repository[logstash_server_version] }}"
+    repo: "{{ logstash_repository }}"
     filename: logstash
     update_cache: True
     state: present
@@ -64,7 +64,7 @@
 - name: Install required packages
   loop:
     - ca-certificates-java
-    - openjdk-11-jre
+    - "openjdk-{{ logstash_openjdk_version }}-jre"
     - "logstash=1:{{ logstash_server_version }}*"
   package:
     name: "{{ item }}"
@@ -144,10 +144,22 @@
   tags:
     - logstash
 
+- name: Start logstash service
+  systemd:
+    name: logstash
+    state: started
+    daemon_reload: True
+    masked: False
+    enabled: True
+  tags:
+    - logstash
+
 - name: Check installed plugins
   register: logstash_plugins_list
   changed_when: False
   command: /usr/share/logstash/bin/logstash-plugin list
+  environment:
+    JAVA_HOME: "{{ logstash_java_home }}"
   tags:
     - logstash
 
@@ -157,6 +169,8 @@
   notify:
     - Restart logstash
   command: "/usr/share/logstash/bin/logstash-plugin install {{ item.name | default(item) }}"
+  environment:
+    JAVA_HOME: "{{ logstash_java_home }}"
   tags:
     - logstash
 
@@ -166,16 +180,8 @@
   notify:
     - Restart logstash
   command: "/usr/share/logstash/bin/logstash-plugin remove {{ item.name | default(item) }}"
-  tags:
-    - logstash
-
-- name: Start logstash service
-  systemd:
-    name: logstash
-    state: started
-    daemon_reload: True
-    masked: False
-    enabled: True
+  environment:
+    JAVA_HOME: "{{ logstash_java_home }}"
   tags:
     - logstash
 
