@@ -1,5 +1,37 @@
 # Standards: 1.2
 ---
+- name: Remove legacy key
+  apt_key:
+    id: 46095ACC8548582C1A2699A9D27D666CD88E42B4
+    state: absent
+  tags:
+    - logstash
+
+- name: Remove legacy repo
+  apt_repository:
+    repo: "deb https://artifacts.elastic.co/packages/{{ logstash_major_version }}.x/apt stable main"
+    filename: elastic
+    update_cache: False
+    state: absent
+  tags:
+    - logstash
+
+- name: Download repo key
+  shell:
+    cmd: "curl -sSL 'https://artifacts.elastic.co/GPG-KEY-elasticsearch' | gpg --dearmor --output {{ logstash_keyring }}"
+    creates: "{{ logstash_keyring }}"
+  tags:
+    - logstash
+
+- name: Add apt repository
+  apt_repository:
+    repo: "deb [signed-by={{ logstash_keyring }}] https://artifacts.elastic.co/packages/{{ logstash_major_version }}.x/apt stable main"
+    filename: elastic
+    update_cache: True
+    state: present
+  tags:
+    - logstash
+
 - name: Create required group
   group:
     name: "{{ logstash_group }}"
@@ -17,23 +49,6 @@
     home: /usr/share/logstash
     create_home: False
     system: True
-    state: present
-  tags:
-    - logstash
-
-- name: Download repo key
-  apt_key:
-    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
-    id: 46095ACC8548582C1A2699A9D27D666CD88E42B4
-    state: present
-  tags:
-    - logstash
-
-- name: Add apt repository
-  apt_repository:
-    repo: "{{ logstash_repository }}"
-    filename: logstash
-    update_cache: True
     state: present
   tags:
     - logstash
