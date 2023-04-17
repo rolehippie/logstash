@@ -32,12 +32,12 @@ Building and improving this Ansible role have been sponsored by my current and p
   - [logstash_initial_heap_space](#logstash_initial_heap_space)
   - [logstash_install_plugins](#logstash_install_plugins)
   - [logstash_java_home](#logstash_java_home)
+  - [logstash_keyring](#logstash_keyring)
   - [logstash_major_version](#logstash_major_version)
   - [logstash_maximum_heap_space](#logstash_maximum_heap_space)
   - [logstash_node_name](#logstash_node_name)
   - [logstash_openjdk_version](#logstash_openjdk_version)
   - [logstash_pipeline_ordered](#logstash_pipeline_ordered)
-  - [logstash_repository](#logstash_repository)
   - [logstash_server_version](#logstash_server_version)
   - [logstash_user](#logstash_user)
 - [Discovered Tags](#discovered-tags)
@@ -205,6 +205,16 @@ logstash_install_plugins: []
 logstash_java_home: /usr/lib/jvm/java-11-openjdk-amd64
 ```
 
+### logstash_keyring
+
+Path for the repository keyring
+
+#### Default value
+
+```YAML
+logstash_keyring: /usr/share/keyrings/elastic-archive-keyring.gpg
+```
+
 ### logstash_major_version
 
 Major version built via server version variable
@@ -253,17 +263,6 @@ Set the pipeline event ordering
 
 ```YAML
 logstash_pipeline_ordered: auto
-```
-
-### logstash_repository
-
-Repository used for installation
-
-#### Default value
-
-```YAML
-logstash_repository: deb https://artifacts.elastic.co/packages/{{ logstash_major_version
-  }}.x/apt stable main
 ```
 
 ### logstash_server_version
