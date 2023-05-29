@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/rolehippie/logstash/compare/v2.0.0...v2.1.0) (2023-05-29)
+
+
+### Features
+
+* use unified path for repo key and drop legacy key ([b3a638a](https://github.com/rolehippie/logstash/commit/b3a638a99f40daedd620f57eee6127d39ba75a37))
+
 ## [2.0.0](https://github.com/rolehippie/logstash/compare/v1.0.0...v2.0.0) (2023-01-05)
 
 
