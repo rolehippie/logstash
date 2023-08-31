@@ -1,6 +1,6 @@
 # logstash
 
-[![Source Code](https://img.shields.io/badge/github-source%20code-blue?logo=github&amp;logoColor=white)](https://github.com/rolehippie/logstash)
+[![Source Code](https://img.shields.io/badge/github-source%20code-blue?logo=github&logoColor=white)](https://github.com/rolehippie/logstash)
 [![General Workflow](https://github.com/rolehippie/logstash/actions/workflows/general.yml/badge.svg)](https://github.com/rolehippie/logstash/actions/workflows/general.yml)
 [![Readme Workflow](https://github.com/rolehippie/logstash/actions/workflows/docs.yml/badge.svg)](https://github.com/rolehippie/logstash/actions/workflows/docs.yml)
 [![Galaxy Workflow](https://github.com/rolehippie/logstash/actions/workflows/galaxy.yml/badge.svg)](https://github.com/rolehippie/logstash/actions/workflows/galaxy.yml)
@@ -51,7 +51,6 @@ Building and improving this Ansible role have been sponsored by my current and p
 
 - Minimum Ansible version: `2.10`
 
-
 ## Default Variables
 
 ### logstash_exporter_args
@@ -71,7 +70,8 @@ URL to the archive of the release to install
 #### Default value
 
 ```YAML
-logstash_exporter_download: https://gitlab.com/alxrem/prometheus-logstash-exporter/uploads/e0e93259ae977cc73674b95e5f5b4cfa/prometheus-logstash-exporter-{{
+logstash_exporter_download: 
+  https://gitlab.com/alxrem/prometheus-logstash-exporter/uploads/e0e93259ae977cc73674b95e5f5b4cfa/prometheus-logstash-exporter-{{
   logstash_exporter_version }}-linux-amd64
 ```
 
