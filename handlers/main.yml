@@ -1,18 +1,18 @@
 ---
 - name: Reload logstash
-  systemd:
+  ansible.builtin.systemd:
     name: logstash
     state: reloaded
     daemon_reload: True
 
 - name: Restart logstash
-  systemd:
+  ansible.builtin.systemd:
     name: logstash
     state: restarted
     daemon_reload: True
 
 - name: Restart logstash-exporter
-  systemd:
+  ansible.builtin.systemd:
     name: logstash-exporter
     state: restarted
     daemon_reload: yes

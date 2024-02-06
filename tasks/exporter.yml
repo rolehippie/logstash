@@ -4,13 +4,13 @@
   failed_when: False
   changed_when: False
   check_mode: False
-  shell: /usr/bin/logstash-exporter --version 2>&1
+  ansible.builtin.shell: /usr/bin/logstash-exporter --version 2>&1
   tags:
     - logstash
     - logstash-exporter
 
 - name: Fact version change
-  set_fact:
+  ansible.builtin.set_fact:
     logstash_exporter_version_changed: "{{ logstash_exporter_version_check.rc != 0 or (logstash_exporter_version_check.stdout_lines is defined and logstash_exporter_version not in logstash_exporter_version_check.stdout_lines[0]) | bool }}"
   tags:
     - logstash
@@ -18,7 +18,7 @@
 
 - name: Download exporter binary
   when: logstash_exporter_version_changed
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ logstash_exporter_download }}"
     dest: /usr/bin/logstash-exporter
     owner: root
@@ -31,7 +31,7 @@
 - name: Write default config
   notify:
     - Restart logstash-exporter
-  template:
+  ansible.builtin.template:
     src: exporter/default.j2
     dest: /etc/default/logstash-exporter
     owner: root
@@ -44,7 +44,7 @@
 - name: Write service file
   notify:
     - Restart logstash-exporter
-  template:
+  ansible.builtin.template:
     src: exporter/service.j2
     dest: /etc/systemd/system/logstash-exporter.service
     owner: root
@@ -55,7 +55,7 @@
     - logstash-exporter
 
 - name: Start logstash-exporter service
-  systemd:
+  ansible.builtin.systemd:
     name: logstash-exporter
     state: started
     daemon_reload: True
