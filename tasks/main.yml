@@ -1,14 +1,13 @@
-# Standards: 1.2
 ---
 - name: Remove legacy key
-  apt_key:
+  ansible.builtin.apt_key:
     id: 46095ACC8548582C1A2699A9D27D666CD88E42B4
     state: absent
   tags:
     - logstash
 
 - name: Remove legacy repo
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: "deb https://artifacts.elastic.co/packages/{{ logstash_major_version }}.x/apt stable main"
     filename: elastic
     update_cache: False
@@ -17,14 +16,14 @@
     - logstash
 
 - name: Download repo key
-  shell:
+  ansible.builtin.shell:
     cmd: "curl -sSL 'https://artifacts.elastic.co/GPG-KEY-elasticsearch' | gpg --dearmor --output {{ logstash_keyring }}"
     creates: "{{ logstash_keyring }}"
   tags:
     - logstash
 
 - name: Add apt repository
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: "deb [signed-by={{ logstash_keyring }}] https://artifacts.elastic.co/packages/{{ logstash_major_version }}.x/apt stable main"
     filename: elastic
     update_cache: True
@@ -33,7 +32,7 @@
     - logstash
 
 - name: Create required group
-  group:
+  ansible.builtin.group:
     name: "{{ logstash_group }}"
     system: True
     state: present
@@ -41,7 +40,7 @@
     - logstash
 
 - name: Create required user
-  user:
+  ansible.builtin.user:
     name: "{{ logstash_user }}"
     group: "{{ logstash_group }}"
     password: "!"
@@ -54,7 +53,7 @@
     - logstash
 
 - name: Pin package version
-  copy:
+  ansible.builtin.copy:
     content: |
       Explantion: Pin added by logstash role
       Package: logstash
@@ -68,7 +67,7 @@
     - logstash
 
 - name: Enforce man dir
-  file:
+  ansible.builtin.file:
     path: /usr/share/man/man1
     recurse: True
     owner: root
@@ -81,7 +80,7 @@
     - ca-certificates-java
     - "openjdk-{{ logstash_openjdk_version }}-jre"
     - "logstash=1:{{ logstash_server_version }}*"
-  package:
+  ansible.builtin.package:
     name: "{{ item }}"
     state: present
   environment:
@@ -93,7 +92,7 @@
   loop:
     - /etc/logstash/logstash-sample.conf
     - /etc/logstash/startup.options
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: absent
   tags:
@@ -102,7 +101,7 @@
 - name: Write log4j2 config
   notify:
     - Restart logstash
-  copy:
+  ansible.builtin.copy:
     src: log4j2.properties
     dest: /etc/logstash/log4j2.properties
     owner: root
@@ -114,7 +113,7 @@
 - name: Write logstash config
   notify:
     - Restart logstash
-  template:
+  ansible.builtin.template:
     src: config.j2
     dest: /etc/logstash/logstash.yml
     owner: root
@@ -126,7 +125,7 @@
 - name: Write pipelines config
   notify:
     - Restart logstash
-  template:
+  ansible.builtin.template:
     src: pipelines.j2
     dest: /etc/logstash/pipelines.yml
     owner: root
@@ -138,7 +137,7 @@
 - name: Write jvm config
   notify:
     - Restart logstash
-  template:
+  ansible.builtin.template:
     src: jvm.j2
     dest: /etc/logstash/jvm.options
     owner: root
@@ -150,7 +149,7 @@
 - name: Write default config
   notify:
     - Restart logstash
-  template:
+  ansible.builtin.template:
     src: default.j2
     dest: /etc/default/logstash
     owner: root
@@ -160,7 +159,7 @@
     - logstash
 
 - name: Start logstash service
-  systemd:
+  ansible.builtin.systemd:
     name: logstash
     state: started
     daemon_reload: True
@@ -172,7 +171,7 @@
 - name: Check installed plugins
   register: logstash_plugins_list
   changed_when: False
-  command: /usr/share/logstash/bin/logstash-plugin list
+  ansible.builtin.command: /usr/share/logstash/bin/logstash-plugin list
   environment:
     JAVA_HOME: "{{ logstash_java_home }}"
   tags:
@@ -183,7 +182,7 @@
   when: item not in logstash_plugins_list.stdout and item.state | default('present') == 'present'
   notify:
     - Restart logstash
-  command: "/usr/share/logstash/bin/logstash-plugin install {{ item.name | default(item) }}"
+  ansible.builtin.command: "/usr/share/logstash/bin/logstash-plugin install {{ item.name | default(item) }}"
   environment:
     JAVA_HOME: "{{ logstash_java_home }}"
   tags:
@@ -194,7 +193,7 @@
   when: item in logstash_plugins_list.stdout and item.state | default('present') == 'absent'
   notify:
     - Restart logstash
-  command: "/usr/share/logstash/bin/logstash-plugin remove {{ item.name | default(item) }}"
+  ansible.builtin.command: "/usr/share/logstash/bin/logstash-plugin remove {{ item.name | default(item) }}"
   environment:
     JAVA_HOME: "{{ logstash_java_home }}"
   tags:
@@ -202,7 +201,7 @@
 
 - name: Include exporter tasks
   when: logstash_exporter_enabled | default(False)
-  include_tasks: exporter.yml
+  ansible.builtin.include_tasks: exporter.yml
   tags:
     - logstash
     - logstash-exporter
