@@ -44,7 +44,7 @@
     name: "{{ logstash_user }}"
     group: "{{ logstash_group }}"
     password: "!"
-    ansible.builtin.shell: /usr/sbin/nologin
+    shell: /usr/sbin/nologin
     home: /usr/share/logstash
     create_home: False
     system: True
