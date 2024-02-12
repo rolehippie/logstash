@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.0.0](https://github.com/rolehippie/logstash/compare/v2.1.0...v3.0.0) (2024-02-12)
+
+
+### Features
+
+* drop support for ubuntu 18.04 ([1959f01](https://github.com/rolehippie/logstash/commit/1959f015c85f3b3192152ebfda99942831970dcc))
+* used full qualified collection names ([20ff905](https://github.com/rolehippie/logstash/commit/20ff9050ce6ba124ce3d09e61dd559179b0a2d19))
+
+
+### Bugfixes
+
+* use right attribute for user shell ([83b5c1c](https://github.com/rolehippie/logstash/commit/83b5c1c4d9babcea0ef90323422207be4671dde6))
+
 ## [2.1.0](https://github.com/rolehippie/logstash/compare/v2.0.0...v2.1.0) (2023-05-29)
 
 
