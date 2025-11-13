@@ -23,7 +23,7 @@ logstash_node_name: "{{ ansible_hostname }}"
 logstash_pipeline_ordered: auto
 
 # @var logstash_http_enabled:description: Enable the integrated HTTP API
-logstash_http_enabled: True
+logstash_http_enabled: true
 
 # @var logstash_http_host:description: Host binding for the HTTP API
 logstash_http_host: 127.0.0.1
@@ -53,7 +53,7 @@ logstash_install_plugins: []
 logstash_keyring: /usr/share/keyrings/elastic-archive-keyring.gpg
 
 # @var logstash_exporter_enabled:description: Enable the logstash exporter
-logstash_exporter_enabled: True
+logstash_exporter_enabled: true
 
 # @var logstash_exporter_version:description: Version of the release to install
 logstash_exporter_version: 0.7.0
