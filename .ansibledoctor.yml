@@ -1,4 +1,5 @@
 ---
-role_name: logstash
+role:
+  name: logstash
 
 ...
