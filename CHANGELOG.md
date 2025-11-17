@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.0](https://github.com/rolehippie/logstash/compare/v3.0.0...v3.1.0) (2025-11-17)
+
+
+### Features
+
+* apply new repo structure and update linting ([138c636](https://github.com/rolehippie/logstash/commit/138c6360381488ea3b79664d04bab09c791040aa))
+
 ## [3.0.0](https://github.com/rolehippie/logstash/compare/v2.1.0...v3.0.0) (2024-02-12)
 
 
