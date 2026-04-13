@@ -70,9 +70,7 @@ URL to the archive of the release to install
 #### Default value
 
 ```YAML
-logstash_exporter_download: 
-  https://gitlab.com/alxrem/prometheus-logstash-exporter/uploads/e0e93259ae977cc73674b95e5f5b4cfa/prometheus-logstash-exporter-{{
-  logstash_exporter_version }}-linux-amd64
+logstash_exporter_download: https://gitlab.com/alxrem/prometheus-logstash-exporter/uploads/e0e93259ae977cc73674b95e5f5b4cfa/prometheus-logstash-exporter-{{ logstash_exporter_version }}-linux-amd64
 ```
 
 ### logstash_exporter_enabled
