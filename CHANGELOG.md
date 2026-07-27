@@ -1,5 +1,7 @@
 # Changelog
 
+## [3.2.0](https://github.com/rolehippie/logstash/compare/v3.1.0...v3.2.0) (2026-07-27)
+
 ## [3.1.0](https://github.com/rolehippie/logstash/compare/v3.0.0...v3.1.0) (2025-11-17)
 
 
