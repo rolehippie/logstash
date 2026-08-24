@@ -17,6 +17,8 @@ Building and improving this Ansible role have been sponsored by my current and p
 
 - [Requirements](#requirements)
 - [Default Variables](#default-variables)
+  - [logstash_arch](#logstash_arch)
+  - [logstash_exporter_arch](#logstash_exporter_arch)
   - [logstash_exporter_args](#logstash_exporter_args)
   - [logstash_exporter_download](#logstash_exporter_download)
   - [logstash_exporter_enabled](#logstash_exporter_enabled)
@@ -53,6 +55,26 @@ Building and improving this Ansible role have been sponsored by my current and p
 
 ## Default Variables
 
+### logstash_arch
+
+Architecture used for the jdk
+
+#### Default value
+
+```YAML
+logstash_arch: "{{ 'arm64' if ansible_facts['architecture'] == 'aarch64' or ansible_facts['architecture'] == 'arm64' else 'amd64' }}"
+```
+
+### logstash_exporter_arch
+
+Architecture of the static binary
+
+#### Default value
+
+```YAML
+logstash_exporter_arch: "{{ 'arm64' if ansible_facts['architecture'] == 'aarch64' or ansible_facts['architecture'] == 'arm64' else 'amd64' }}"
+```
+
 ### logstash_exporter_args
 
 List of arguments joined for the executable
@@ -70,7 +92,7 @@ URL to the archive of the release to install
 #### Default value
 
 ```YAML
-logstash_exporter_download: https://gitlab.com/alxrem/prometheus-logstash-exporter/uploads/e0e93259ae977cc73674b95e5f5b4cfa/prometheus-logstash-exporter-{{ logstash_exporter_version }}-linux-amd64
+logstash_exporter_download: https://gitlab.com/alxrem/prometheus-logstash-exporter/uploads/e0e93259ae977cc73674b95e5f5b4cfa/prometheus-logstash-exporter-{{ logstash_exporter_version }}-linux-{{ logstash_exporter_arch }}
 ```
 
 ### logstash_exporter_enabled
@@ -200,7 +222,7 @@ logstash_install_plugins: []
 #### Default value
 
 ```YAML
-logstash_java_home: /usr/lib/jvm/java-11-openjdk-amd64
+logstash_java_home: /usr/lib/jvm/java-{{ logstash_openjdk_version }}-openjdk-{{ logstash_arch }}
 ```
 
 ### logstash_keyring
@@ -240,7 +262,7 @@ Name of the node
 #### Default value
 
 ```YAML
-logstash_node_name: '{{ ansible_facts['hostname'] }}'
+logstash_node_name: "{{ ansible_facts['hostname'] }}"
 ```
 
 ### logstash_openjdk_version
