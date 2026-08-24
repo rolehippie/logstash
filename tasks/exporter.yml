@@ -17,7 +17,8 @@
     - logstash-exporter
 
 - name: Download exporter binary
-  when: logstash_exporter_version_changed
+  when:
+    - logstash_exporter_version_changed
   ansible.builtin.get_url:
     url: "{{ logstash_exporter_download }}"
     dest: /usr/bin/logstash-exporter

@@ -240,7 +240,7 @@ Name of the node
 #### Default value
 
 ```YAML
-logstash_node_name: '{{ ansible_hostname }}'
+logstash_node_name: '{{ ansible_facts['hostname'] }}'
 ```
 
 ### logstash_openjdk_version

@@ -1,6 +1,12 @@
 ---
 - name: Converge
   hosts: all
+  vars:
+    logstash_exporter_enabled: "{{ false if ansible_facts['architecture'] == 'aarch64' or ansible_facts['architecture'] == 'arm64' else true }}"
+    logstash_install_plugins:
+      - logstash-input-gelf
+      - name: logstash-input-beats
+        state: absent
   roles:
     - role: rolehippie.logstash
 

@@ -17,7 +17,7 @@ logstash_general_pipelines:
 logstash_extra_pipelines: []
 
 # @var logstash_node_name:description: Name of the node
-logstash_node_name: "{{ ansible_hostname }}"
+logstash_node_name: "{{ ansible_facts['hostname'] }}"
 
 # @var logstash_pipeline_ordered:description: Set the pipeline event ordering
 logstash_pipeline_ordered: auto
@@ -43,8 +43,11 @@ logstash_group: logstash
 # @var logstash_user:description: Name of the user owning Elasticsearch
 logstash_user: logstash
 
+# @var logstash_arch:description: Architecture used for the jdk
+logstash_arch: "{{ 'arm64' if ansible_facts['architecture'] == 'aarch64' or ansible_facts['architecture'] == 'arm64' else 'amd64' }}"
+
 # @var logstash_user:description: Path to the java home environment
-logstash_java_home: /usr/lib/jvm/java-11-openjdk-amd64
+logstash_java_home: "/usr/lib/jvm/java-{{ logstash_openjdk_version }}-openjdk-{{ logstash_arch }}"
 
 # @var logstash_install_plugins:description: List of plugins to install
 logstash_install_plugins: []
@@ -58,8 +61,11 @@ logstash_exporter_enabled: true
 # @var logstash_exporter_version:description: Version of the release to install
 logstash_exporter_version: 0.7.0
 
+# @var logstash_exporter_arch:description: Architecture of the static binary
+logstash_exporter_arch: "{{ 'arm64' if ansible_facts['architecture'] == 'aarch64' or ansible_facts['architecture'] == 'arm64' else 'amd64' }}"
+
 # @var logstash_exporter_download:description: URL to the archive of the release to install
-logstash_exporter_download: "https://gitlab.com/alxrem/prometheus-logstash-exporter/uploads/e0e93259ae977cc73674b95e5f5b4cfa/prometheus-logstash-exporter-{{ logstash_exporter_version }}-linux-amd64"
+logstash_exporter_download: "https://gitlab.com/alxrem/prometheus-logstash-exporter/uploads/e0e93259ae977cc73674b95e5f5b4cfa/prometheus-logstash-exporter-{{ logstash_exporter_version }}-linux-{{ logstash_exporter_arch }}"
 
 # @var logstash_exporter_host:description: Host of logstash to connect to
 logstash_exporter_host: localhost

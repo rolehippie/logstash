@@ -1,11 +1,4 @@
 ---
-- name: Remove legacy key
-  ansible.builtin.apt_key:
-    id: 46095ACC8548582C1A2699A9D27D666CD88E42B4
-    state: absent
-  tags:
-    - logstash
-
 - name: Remove legacy repo
   ansible.builtin.apt_repository:
     repo: "deb https://artifacts.elastic.co/packages/{{ logstash_major_version }}.x/apt stable main"
@@ -15,10 +8,37 @@
   tags:
     - logstash
 
+- name: Remove legacy key
+  ansible.builtin.apt_key:
+    id: 46095ACC8548582C1A2699A9D27D666CD88E42B4
+    state: absent
+  tags:
+    - logstash
+
 - name: Download repo key
-  ansible.builtin.shell:
-    cmd: "curl -sSL 'https://artifacts.elastic.co/GPG-KEY-elasticsearch' | gpg --dearmor --output {{ logstash_keyring }}"
-    creates: "{{ logstash_keyring }}"
+  register: logstash_key_download
+  ansible.builtin.get_url:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    dest: "{{ logstash_keyring }}.asc"
+    mode: u=rw,g=r,o=r
+    force: true
+  tags:
+    - logstash
+
+- name: Check repo key
+  register: logstash_key_status
+  ansible.builtin.stat:
+    path: "{{ logstash_keyring }}"
+  tags:
+    - logstash
+
+- name: Dearmor repo key
+  when:
+    - logstash_key_download.changed or not logstash_key_status.stat.exists
+  register: logstash_key_convert
+  changed_when: logstash_key_convert.rc == 0
+  ansible.builtin.command:
+    cmd: "gpg --batch --yes --dearmor -o {{ logstash_keyring }} {{ logstash_keyring }}.asc"
   tags:
     - logstash
 
@@ -179,10 +199,16 @@
 
 - name: Install defined plugins
   loop: "{{ logstash_install_plugins }}"
-  when: item not in logstash_plugins_list.stdout and item.state | default('present') == 'present'
+  when:
+    - logstash_plugins_list.stdout is defined
+    - (item if item.name is not defined else item.name) not in logstash_plugins_list.stdout
+    - item.state is not defined or item.state == 'present'
   notify:
     - Restart logstash
-  ansible.builtin.command: "/usr/share/logstash/bin/logstash-plugin install {{ item.name | default(item) }}"
+  register: logstash_plugin_install
+  changed_when: "'Installation successful' in logstash_plugin_install.stdout"
+  failed_when: logstash_plugin_install.rc > 0
+  ansible.builtin.command: "/usr/share/logstash/bin/logstash-plugin install {{ item if item.name is not defined else item.name }}"
   environment:
     JAVA_HOME: "{{ logstash_java_home }}"
   tags:
@@ -190,17 +216,25 @@
 
 - name: Remove defined plugins
   loop: "{{ logstash_install_plugins }}"
-  when: item in logstash_plugins_list.stdout and item.state | default('present') == 'absent'
+  when:
+    - logstash_plugins_list.stdout is defined
+    - (item if item.name is not defined else item.name) in logstash_plugins_list.stdout
+    - item.state is defined
+    - item.state == 'absent'
   notify:
     - Restart logstash
-  ansible.builtin.command: "/usr/share/logstash/bin/logstash-plugin remove {{ item.name | default(item) }}"
+  register: logstash_plugin_remove
+  changed_when: "'Successfully removed' in logstash_plugin_remove.stdout"
+  failed_when: logstash_plugin_remove.rc > 0
+  ansible.builtin.command: "/usr/share/logstash/bin/logstash-plugin uninstall {{ item if item.name is not defined else item.name }}"
   environment:
     JAVA_HOME: "{{ logstash_java_home }}"
   tags:
     - logstash
 
 - name: Include exporter tasks
-  when: logstash_exporter_enabled | default(false)
+  when:
+    - logstash_exporter_enabled
   ansible.builtin.include_tasks: exporter.yml
   tags:
     - logstash
