@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.4.0](https://github.com/rolehippie/logstash/compare/v3.3.0...v3.4.0) (2026-09-07)
+
+### Features
+
+* use new required facts as attributes ([a5a1978](https://github.com/rolehippie/logstash/commit/a5a1978dbeb3e58e98287de67d18606e95eb95e3))
+
 ## [3.3.0](https://github.com/rolehippie/logstash/compare/v3.2.0...v3.3.0) (2026-08-31)
 
 ### Features
